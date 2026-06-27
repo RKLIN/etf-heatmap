@@ -13,8 +13,9 @@
   .badge { background: #0f3460; border: 1px solid #e94560; border-radius: 6px; padding: 4px 10px; font-size: 0.75rem; color: #e94560; font-weight: 600; white-space: nowrap; }
   .updated-badge { margin-left: auto; font-size: 0.75rem; opacity: 0.6; white-space: nowrap; }
   .container { padding: 24px 32px; max-width: 1600px; margin: 0 auto; }
-  .tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; flex-wrap: wrap; }
-  .tab-btn { padding: 9px 16px; border: none; background: none; font-size: 0.88rem; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; border-radius: 8px 8px 0 0; white-space: nowrap; }
+  .tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn { padding: 9px 16px; border: none; background: none; font-size: 0.88rem; font-weight: 600; color: #64748b; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; border-radius: 8px 8px 0 0; white-space: nowrap; flex-shrink: 0; }
   .tab-btn:hover { color: #0f3460; background: #f1f5f9; }
   .tab-btn.active { color: #0f3460; border-bottom-color: #e94560; background: white; }
   .tab-panel { display: none; }
@@ -53,7 +54,13 @@
   .tooltip b { color: #e94560; }
   .source-note { margin-top: 14px; font-size: 0.75rem; color: #94a3b8; text-align: right; }
   .source-note a { color: #3b82f6; text-decoration: none; }
-  @media (max-width: 768px) { .container { padding: 16px; } header { padding: 16px; } }
+  @media (max-width: 768px) {
+    .container { padding: 12px; }
+    header { padding: 14px 16px; }
+    header h1 { font-size: 1.1rem; }
+    .tab-name { display: none; }
+    .tab-btn { padding: 8px 12px; font-size: 0.82rem; }
+  }
 </style>
 </head>
 <body>
@@ -67,10 +74,10 @@
 </header>
 <div class="container">
   <div class="tabs">
-    <button class="tab-btn active" id="tab-00981A" onclick="switchTab('00981A')">📈 00981A 統一台股增長</button>
-    <button class="tab-btn" id="tab-00403A" onclick="switchTab('00403A')">📊 00403A 統一升級50</button>
-    <button class="tab-btn" id="tab-00992A" onclick="switchTab('00992A')">💡 00992A 群益科技創新</button>
-    <button class="tab-btn" id="tab-00988A" onclick="switchTab('00988A')">🌐 00988A 統一全球創新</button>
+    <button class="tab-btn active" id="tab-00981A" onclick="switchTab('00981A')">📈 00981A<span class="tab-name"> 統一台股增長</span></button>
+    <button class="tab-btn" id="tab-00403A" onclick="switchTab('00403A')">📊 00403A<span class="tab-name"> 統一升級50</span></button>
+    <button class="tab-btn" id="tab-00992A" onclick="switchTab('00992A')">💡 00992A<span class="tab-name"> 群益科技創新</span></button>
+    <button class="tab-btn" id="tab-00988A" onclick="switchTab('00988A')">🌐 00988A<span class="tab-name"> 統一全球創新</span></button>
   </div>
   <div id="panel-00981A" class="tab-panel active"></div>
   <div id="panel-00403A" class="tab-panel"></div>
@@ -170,15 +177,4 @@ function showTip(e) {
 }
 function moveTip(e) {
   if(!tipOn)return; const x=e.clientX+14,y=e.clientY-10,ow=tip.offsetWidth,oh=tip.offsetHeight;
-  tip.style.left=(x+ow>window.innerWidth?x-ow-20:x)+"px"; tip.style.top=(y+oh>window.innerHeight?y-oh:y)+"px";
-}
-function hideTip() { tip.classList.remove("show"); tipOn=false; }
-
-// 顯示最新更新日期
-const latestUpdated = Object.values(ETF_DATA).map(d=>d.lastUpdated||"").filter(Boolean).sort().pop();
-if(latestUpdated) document.getElementById("updated-label").textContent="資料更新："+latestUpdated;
-
-renderPanel("00981A");
-</script>
-</body>
-</html>
+  tip.style.left=(x+ow>window.innerWidth?x-ow-20:x)+"px"; tip.
